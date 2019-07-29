@@ -39,7 +39,15 @@ checkip_and_update_ddns() {
 		echo "Could not detect external IP."
 		exit 42
 	fi
-
+	
+	LAST_IP=$(cat /tmp/$HOSTNAME.ip)
+	echo "Last ip : $LAST_IP"
+	if [$IP -eq $LAST_IP]
+	then
+		echo "same ip $IP"
+		return
+	fi
+	
 	SERVICEURL="www.changeip.com/nic/update"
 
 	BASE64AUTH=$(echo -n "$USER:$PASSWORD" | base64 | tr -d \\n)
@@ -69,6 +77,8 @@ checkip_and_update_ddns() {
 
 	RESULT=$(curl -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
 	echo $RESULT
+	
+	echo $IP > /tmp/$HOSTNAME.ip
 	
 }
 
