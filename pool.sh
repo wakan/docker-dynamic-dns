@@ -36,7 +36,7 @@ checkip_and_update_ddns() {
 
 	if [ -n "$DETECTIP" ] && [ -z $IP ]
 	then
-		RESULT="Could not detect external IP."
+		echo "Could not detect external IP."
 		exit 42
 	fi
 
