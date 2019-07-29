@@ -43,11 +43,13 @@ checkip_and_update_ddns() {
 
 	if test -f "/tmp/$HOSTNAME.ip"; then	
 		LAST_IP=$(cat /tmp/$HOSTNAME.ip)
-		echo "Last ip : $LAST_IP"
+		#echo "Last ip : $LAST_IP"
 		if [ "$IP" == "$LAST_IP" ]
 		then
-			echo "same ip $IP"
+			#echo "same ip $IP"
 			return
+		else
+			echo "Last ip $LAST_IP change to $IP"
 		fi
 	fi
 	
@@ -76,7 +78,7 @@ checkip_and_update_ddns() {
 		NOIPURL="${NOIPURL}myip=$IP"
 	fi
 
-	echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
+	#echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
 
 	RESULT=$(curl -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
 	echo $RESULT
