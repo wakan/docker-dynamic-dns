@@ -39,13 +39,16 @@ checkip_and_update_ddns() {
 		echo "Could not detect external IP."
 		exit 42
 	fi
-	
-	LAST_IP=$(cat /tmp/$HOSTNAME.ip)
-	echo "Last ip : $LAST_IP"
-	if [$IP -eq $LAST_IP]
-	then
-		echo "same ip $IP"
-		return
+
+
+	if test -f "/tmp/$HOSTNAME.ip"; then	
+		LAST_IP=$(cat /tmp/$HOSTNAME.ip)
+		echo "Last ip : $LAST_IP"
+		if [ "$IP" == "$LAST_IP" ]
+		then
+			echo "same ip $IP"
+			return
+		fi
 	fi
 	
 	SERVICEURL="www.changeip.com/nic/update"
