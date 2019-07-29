@@ -39,12 +39,44 @@ then
 	exit 35
 fi
 
+
+SERVICEURL="dynupdate.no-ip.com/nic/update"
+
+case "$SERVICE" in
+        noip)
+            SERVICEURL="dynupdate.no-ip.com/nic/update"
+            ;;
+        dyndns)
+            SERVICEURL="members.dyndns.org/v3/update"
+            ;;
+        duckdns)
+            SERVICEURL="www.duckdns.org/v3/update"
+            ;;
+	google)
+            SERVICEURL="domains.google.com/nic/update"
+            ;;
+	changeip)
+            SERVICEURL="www.changeip.com/nic/update"
+            ;;
+
+        *)
+	    SERVICEURL="dynupdate.no-ip.com/nic/update"
+	    ;;
+esac
+
 USERAGENT="--user-agent=\"no-ip shell script/1.0 mail@mail.com\""
-NOIPURL="https://api.org-dns.com/dyndns/?user=$USER\&key=$PASSWORD\&domain="
+BASE64AUTH=$(echo '"$USER:$PASSWORD"' | base64)
+AUTHHEADER="--header=\"Authorization: $BASE64AUTH\""
+NOIPURL="https://$USER:$PASSWORD@$SERVICEURL"
+
+if [ -n "$IP" ] || [ -n "$HOSTNAME" ]
+then
+	NOIPURL="$NOIPURL?"
+fi
 
 if [ -n "$HOSTNAME" ]
 then
-	NOIPURL="${NOIPURL}${HOSTNAME}"
+	NOIPURL="${NOIPURL}hostname=${HOSTNAME}"
 fi
 
 if [ -n "$IP" ]
