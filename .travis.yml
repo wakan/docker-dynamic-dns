@@ -3,3 +3,12 @@ dist: trusty
 jobs:
   include:
     - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t docker-dynamic-dns .
+      - docker images
+      - docker tag docker-dynamic-dns $DOCKER_USERNAME/docker-dynamic-dns
+      - docker push $DOCKER_USERNAME/docker-dynamic-dns
+    - stage: test
+      script: docker run --rm $DOCKER_USERNAME/docker-dynamic-dns cat hello.txt
+    - script: docker run --rm $DOCKER_USERNAME/docker-dynamic-dns cat hello.txt
