@@ -40,51 +40,56 @@ checkip_and_update_ddns() {
 		exit 42
 	fi
 
+	HOSTNAMES=($(echo $HOSTNAME | tr "," "\n"))
+	for CUR_HOST in "${HOSTNAMES[@]}"
+	do
+		echo $CUR_HOST
 
-	if test -f "/tmp/$HOSTNAME.ip"; then	
-		LAST_IP=$(cat /tmp/$HOSTNAME.ip)
-		#echo "Last ip : $LAST_IP"
-		if [ "$IP" == "$LAST_IP" ]
-		then
-			#echo "same ip $IP"
-			return
-		else
-			echo "Last ip $LAST_IP change to $IP"
+		if test -f "/tmp/$CUR_HOST.ip"; then	
+			LAST_IP=$(cat /tmp/$CUR_HOST.ip)
+			#echo "Last ip : $LAST_IP"
+			if [ "$IP" == "$LAST_IP" ]
+			then
+				#echo "same ip $IP"
+				return
+			else
+				echo "Last ip $LAST_IP change to $IP"
+			fi
 		fi
-	fi
-	
-	SERVICEURL="www.changeip.com/nic/update"
 
-	BASE64AUTH=$(echo -n "$USER:$PASSWORD" | base64 | tr -d \\n)
-	AUTHHEADER="Authorization: Basic $BASE64AUTH"
-	NOIPURL="https://$SERVICEURL"
+		SERVICEURL="www.changeip.com/nic/update"
 
-	if [ -n "$IP" ] || [ -n "$HOSTNAME" ]
-	then
-		NOIPURL="$NOIPURL?"
-	fi
+		BASE64AUTH=$(echo -n "$USER:$PASSWORD" | base64 | tr -d \\n)
+		AUTHHEADER="Authorization: Basic $BASE64AUTH"
+		NOIPURL="https://$SERVICEURL"
 
-	if [ -n "$HOSTNAME" ]
-	then
-		NOIPURL="${NOIPURL}hostname=${HOSTNAME}"
-	fi
-
-	if [ -n "$IP" ]
-	then
-		if [ -n "$HOSTNAME" ]
+		if [ -n "$IP" ] || [ -n "$CUR_HOST" ]
 		then
-			NOIPURL="$NOIPURL&"
+			NOIPURL="$NOIPURL?"
 		fi
-		NOIPURL="${NOIPURL}myip=$IP"
-	fi
 
-	#echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
+		if [ -n "$CUR_HOST" ]
+		then
+			NOIPURL="${NOIPURL}hostname=${CUR_HOST}"
+		fi
 
-	RESULT=$(curl -s -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
-	echo $RESULT
-	
-	echo $IP > /tmp/$HOSTNAME.ip
-	
+		if [ -n "$IP" ]
+		then
+			if [ -n "$CUR_HOST" ]
+			then
+				NOIPURL="$NOIPURL&"
+			fi
+			NOIPURL="${NOIPURL}myip=$IP"
+		fi
+
+		#echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
+
+		RESULT=$(curl -s -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
+		echo $RESULT
+
+		echo $IP > /tmp/$CUR_HOST.ip
+
+	done	
 }
 
 if [ $INTERVAL -ne 0 ]
