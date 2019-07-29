@@ -38,35 +38,10 @@ then
 	echo "Interval is not an integer."
 	exit 35
 fi
+SERVICEURL="www.changeip.com/nic/update"
 
-
-SERVICEURL="dynupdate.no-ip.com/nic/update"
-
-case "$SERVICE" in
-        noip)
-            SERVICEURL="dynupdate.no-ip.com/nic/update"
-            ;;
-        dyndns)
-            SERVICEURL="members.dyndns.org/v3/update"
-            ;;
-        duckdns)
-            SERVICEURL="www.duckdns.org/v3/update"
-            ;;
-	google)
-            SERVICEURL="domains.google.com/nic/update"
-            ;;
-	changeip)
-            SERVICEURL="www.changeip.com/nic/update"
-            ;;
-
-        *)
-	    SERVICEURL="dynupdate.no-ip.com/nic/update"
-	    ;;
-esac
-
-USERAGENT="--user-agent=\"no-ip shell script/1.0 mail@mail.com\""
-BASE64AUTH=$(echo '"$USER:$PASSWORD"' | base64)
-AUTHHEADER="--header=\"Authorization: $BASE64AUTH\""
+BASE64AUTH=$(echo -n "$USER:$PASSWORD" | base64 | tr -d \\n)
+AUTHHEADER="Authorization: Basic $BASE64AUTH"
 NOIPURL="https://$SERVICEURL"
 
 if [ -n "$IP" ] || [ -n "$HOSTNAME" ]
@@ -88,10 +63,10 @@ then
 	NOIPURL="${NOIPURL}myip=$IP"
 fi
 
-echo "$USERAGENT $NOIPURL"
+echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
 
-	RESULT=$(wget --no-check-certificate -qO- $AUTHHEADER $USERAGENT $NOIPURL)
-	echo $RESULT
+RESULT=$(curl -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
+echo $RESULT
 
 	if [ $INTERVAL -eq 0 ]
 	then
@@ -99,4 +74,4 @@ echo "$USERAGENT $NOIPURL"
 	else
 		sleep "${INTERVAL}m"
 	fi
-exit 0
+exit 0	
