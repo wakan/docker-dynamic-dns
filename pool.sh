@@ -29,6 +29,7 @@ fi
 if [ -n "$DETECTIP" ] && [ -z $IP ]
 then
 	RESULT="Could not detect external IP."
+	exit 42
 fi
 
 
@@ -38,47 +39,12 @@ then
 	exit 35
 fi
 
-
-SERVICEURL="dynupdate.no-ip.com/nic/update"
-
-case "$SERVICE" in
-        noip)
-            SERVICEURL="dynupdate.no-ip.com/nic/update"
-            ;;
-
-        dyndns)
-            SERVICEURL="members.dyndns.org/v3/update"
-            ;;
-
-        duckdns)
-            SERVICEURL="www.duckdns.org/v3/update"
-            ;;
-
-				google)
-            SERVICEURL="domains.google.com/nic/update"
-            ;;
-
-
-        *)
-			SERVICEURL="dynupdate.no-ip.com/nic/update"
-
-esac
-
 USERAGENT="--user-agent=\"no-ip shell script/1.0 mail@mail.com\""
-BASE64AUTH=$(echo '"$USER:$PASSWORD"' | base64)
-AUTHHEADER="--header=\"Authorization: $BASE64AUTH\""
-
-NOIPURL="https://$USER:$PASSWORD@$SERVICEURL"
-
-
-if [ -n "$IP" ] || [ -n "$HOSTNAME" ]
-then
-	NOIPURL="$NOIPURL?"
-fi
+NOIPURL="https://api.org-dns.com/dyndns/?user=$USER\&key=$PASSWORD\&domain="
 
 if [ -n "$HOSTNAME" ]
 then
-	NOIPURL="${NOIPURL}hostname=${HOSTNAME}"
+	NOIPURL="${NOIPURL}${HOSTNAME}"
 fi
 
 if [ -n "$IP" ]
@@ -90,17 +56,10 @@ then
 	NOIPURL="${NOIPURL}myip=$IP"
 fi
 
-
-echo "$AUTHHEADER $USERAGENT $NOIPURL"
-
-while :
-do
+echo "$USERAGENT $NOIPURL"
 
 	RESULT=$(wget --no-check-certificate -qO- $AUTHHEADER $USERAGENT $NOIPURL)
-
-
 	echo $RESULT
-
 
 	if [ $INTERVAL -eq 0 ]
 	then
@@ -108,7 +67,4 @@ do
 	else
 		sleep "${INTERVAL}m"
 	fi
-
-done
-
 exit 0
