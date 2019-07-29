@@ -2,20 +2,20 @@
 
 if [ -z "$USER" ]
 then
-	echo "No user was set. Use -u=username"
+	echo "No user was set. Use USER var"
 	exit 10
 fi
 
 if [ -z "$PASSWORD" ]
 then
-	echo "No password was set. Use -p=password"
+	echo "No password was set. Use PASSWORD var"
 	exit 20
 fi
 
 
 if [ -z "$HOSTNAME" ]
 then
-	echo "No host name. Use -h=host.example.com"
+	echo "No host name. Use HOSTNAME var"
 	exit 30
 fi
 
