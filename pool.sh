@@ -30,7 +30,7 @@ fi
 checkip_and_update_ddns() {
 	if [ -n "$DETECTIP" ]
 	then
-		IP=$(curl http://myexternalip.com/raw)
+		IP=$(curl -s http://myexternalip.com/raw)
 	fi
 
 
@@ -80,7 +80,7 @@ checkip_and_update_ddns() {
 
 	#echo "$NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive'"
 
-	RESULT=$(curl -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
+	RESULT=$(curl -s -X GET   $NOIPURL  -H "$AUTHHEADER"  -H 'Connection: keep-alive')
 	echo $RESULT
 	
 	echo $IP > /tmp/$HOSTNAME.ip
