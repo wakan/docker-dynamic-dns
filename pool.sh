@@ -74,7 +74,7 @@ checkip_and_update_ddns() {
 
 if [ $INTERVAL -ne 0 ]
 then
-	while
+	while :
 	do
 		checkip_and_update_ddns
 		sleep "${INTERVAL}m"
