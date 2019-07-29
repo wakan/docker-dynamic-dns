@@ -26,6 +26,9 @@ docker pull blaize/docker-dynamic-dns
 To use the image, use Docker run.
 
 ```
+docker run -it --rm --name=no-ip1 -e USER=wakan_powa_s01@hotmail.fr -e HOSTNAME=wakan.dns04.com,wakan-video.dns04.com,wakan-pihole.dns04.com,wakan-plex.dn
+s04.com,wakan-proxmox.dns04.com,wakan-syno.dns04.com,wakan-wrt.dns04.com -e DETECTIP=1 -e INTERVAL=1 -e PASSWORD='Ctvu#?5dkBN!jJAKChn%=zpcTQJBU4cpLFpcm3$Bt9' -e SERVICE=changeip docker-dynamic
+-dns
 docker run -it --rm --name no-ip1 -e USER=username -e PASSWORD=yourpassword -e SERVICE=duckdns -e HOSTNAME=example.com -e DETECTIP=1 -e INTERVAL=1 docker-dynamic-dns
 ```
 
