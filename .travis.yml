@@ -3,9 +3,5 @@ language: minimal
 services:
   - docker
  
- before_install:
+before_install:
   - docker build -t docker-dynamic-dns .
-  
-script:
-  - echo "hello"  
- 
