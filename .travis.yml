@@ -5,4 +5,7 @@ services:
  
  before_install:
   - docker build -t docker-dynamic-dns .
+  
+script:
+  - echo "hello"  
  
