@@ -14,3 +14,5 @@ script:
   - echo $DNS1_IP
   - DNS2_IP=$(dig +short docker-dynamic-dns.dns05.com)
   - echo $DNS2_IP
+  - [ $DNS1_IP == $EXT_IP ]
+  - [ $DNS2_IP == $EXT_IP ]
