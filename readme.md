@@ -29,8 +29,7 @@ docker pull wakan/docker-dynamic-dns
 To use the image, use Docker run.
 
 ```
-docker run -it --rm --name=no-ip1 -e USER=wakan_powa_s01@hotmail.fr -e HOSTNAME=wakan-video.dns04.com,wakan-plex.dn
-s04.com,wakan-proxmox.dns04.com,wakan-syno.dns04.com,wakan-wrt.dns04.com -e DETECTIP=1 -e PASSWORD='XXXXXXXX' docker-dynamic-dns
+docker run -it --rm --name=no-ip1 -e USER=docker-dynamic-dns -e HOSTNAME=docker-dynamic-dns.dns04.com,docker-dynamic-dns.dns05.com -e DETECTIP=1 -e PASSWORD='R)6\W\KM$jj*Z_B!' docker-dynamic-dns
 ```
 
 The envitonmental variables are as follows:
