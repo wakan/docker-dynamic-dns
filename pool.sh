@@ -19,14 +19,6 @@ then
 	exit 30
 fi
 
-
-if [[ $INTERVAL != [0-9]* ]]
-then
-	echo "Interval is not an integer."
-	exit 35
-fi
-
-
 checkip_and_update_ddns() {
 	if [ -n "$DETECTIP" ]
 	then
@@ -91,12 +83,6 @@ checkip_and_update_ddns() {
 	done	
 }
 
-if [ $INTERVAL -ne 0 ]
-then
-	while :
-	do
-		checkip_and_update_ddns
-		sleep "${INTERVAL}m"
-	done
-fi
+checkip_and_update_ddns
+
 exit 0	
