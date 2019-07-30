@@ -1,6 +1,9 @@
 Docker Dynamic DNS Client
 =====
 
+## Build
+[![Build Status](https://travis-ci.org/wakan/docker-dynamic-dns.svg?branch=master)](https://travis-ci.org/wakan/docker-dynamic-dns)
+
 ## Infos
 
 Docker Hub: https://hub.docker.com/r/wakan/docker-dynamic-dns/
