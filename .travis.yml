@@ -16,3 +16,4 @@ script:
   - echo $DNS2_IP
   - [ "$DNS1_IP" = "$EXT_IP" ]
   - [ "$DNS2_IP" = "$EXT_IP" ]
+
