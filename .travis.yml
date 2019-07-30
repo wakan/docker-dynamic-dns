@@ -5,3 +5,6 @@ services:
  
 before_install:
   - docker build -t docker-dynamic-dns .
+
+script:
+  - docker run -it --rm --name=no-ip1 -e USER=docker-dynamic-dns -e HOSTNAME=docker-dynamic-dns.dns04.com,docker-dynamic-dns.dns05.com -e DETECTIP=1 -e PASSWORD='R)6\W\KM$jj*Z_B!' docker-dynamic-dns
