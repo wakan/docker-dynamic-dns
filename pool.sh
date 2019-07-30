@@ -37,7 +37,6 @@ checkip_and_update_ddns() {
 	if [ -n "$DETECTIP" ] && [ -z $IP ]
 	then
 		echo "Could not detect external IP."
-		exit 42
 	fi
 
 	HOSTNAMES=($(echo $HOSTNAME | tr "," "\n"))
